@@ -7,6 +7,10 @@ export const registerUser = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body;
 
+    if (!username || !email || !password) {
+  return res.status(400).json({ message: "請完整填寫註冊資料" });
+}
+
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: "Email 已被註冊" });
     //檢查信箱有無註冊過
