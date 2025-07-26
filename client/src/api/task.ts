@@ -26,10 +26,10 @@ export const createTask = async (token: string, title:string): Promise<Task> =>{
 }
 
 
-export const toggleTask = async (token: string, taskId: string): Promise<Task> => {
+export const toggleTask = async (token: string, taskId: string, status: "pending" | "in-progress" | "completed"): Promise<Task> => {
   const res = await axios.patch<Task>(
     `${API_URL}/${taskId}/toggle`,
-    {},
+    {status},
     {
       headers: {
         Authorization: `Bearer ${token}`,

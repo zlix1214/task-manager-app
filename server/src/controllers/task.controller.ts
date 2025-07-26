@@ -63,3 +63,26 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "刪除任務失敗" });
   }
 };
+
+export const toggleTask = async(req: AuthRequest, res:Response)=>{
+  const {id} = req.params;
+  const {status} = req.body;
+
+  const vaildStatuses = ["pending", "in-progress", "completed"];
+  if(!vaildStatuses.includes(status)){
+    return res.sendStatus(400).json({message: "無效的任務狀態"});
+  }
+
+  try {
+    const task = await Task.findOne({_id: id, userId: req.userId});
+
+    if(!task) return res.status(404).json({message: "找不到任務"});
+
+    task.status = status;
+    await task.save();
+    res.json(task);
+
+  } catch (err) {
+    res.status(500).json({message:"更新任務失敗"});
+  }
+};
