@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../api/auth";
+import { toast } from "react-toastify";
 
 export const Register: React.FC = () => {
   const [userName, setUserName] = useState("");
@@ -16,7 +17,9 @@ export const Register: React.FC = () => {
     try {
       await register(userName, email, password);
       navigate("/login");
+      toast.error("註冊成功");
     } catch (err: any) {
+      toast.error("註冊失敗");
       setError(err.response?.data?.message || "註冊失敗");
     }
   };

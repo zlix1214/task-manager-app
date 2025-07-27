@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
-import {useAuth} from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -9,18 +10,19 @@ export const Login: React.FC = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-    const auth = useAuth(); 
+  const auth = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-
     try {
       const data = await login(email, password);
-       auth.login(data.token);
+      auth.login(data.token);
       navigate("/tasks");
+      toast.error("登入成功");
     } catch (err: any) {
+      toast.error("登入失敗");
       setError(err.response?.data?.message || "登入失敗");
     }
   };
@@ -46,6 +48,7 @@ export const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full border mb-4"
+            autoComplete="new-password"
             required
           />
         </label>
