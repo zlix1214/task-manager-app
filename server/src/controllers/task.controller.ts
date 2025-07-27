@@ -64,7 +64,7 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const toggleTask = async(req: AuthRequest, res:Response)=>{
+export const updateTaskStatus  = async(req: AuthRequest, res:Response)=>{
   const {id} = req.params;
   const {status} = req.body;
 
