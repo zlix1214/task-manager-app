@@ -29,19 +29,40 @@ export const TaskList: React.FC<TaskListProps> = ({
   onDelete
 }) => {
   if (isFetching) {
-    return <Spinner />;
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="relative">
+            <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 animate-spin"></div>
+            <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-t-indigo-400 animate-spin animate-reverse"></div>
+          </div>
+          <Spinner/>
+          <p className="text-gray-500 text-sm font-medium">載入任務中...</p>
+        </div>
+      </div>
+    );
   }
 
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        <p>沒有找到任務</p>
+      <div className="text-center py-16">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <div className="space-y-2">
+            <p className="text-gray-500 font-medium">還沒有任務</p>
+            <p className="text-gray-400 text-sm">開始建立你的第一個任務吧！</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <ul className="space-y-0">
+    <div className="space-y-3 max-h-64 overflow-y-auto">
       {tasks.map((task) => (
         <TaskItem
           key={task._id}
@@ -56,6 +77,6 @@ export const TaskList: React.FC<TaskListProps> = ({
           onDelete={() => onDelete(task._id)}
         />
       ))}
-    </ul>
+    </div>
   );
 };

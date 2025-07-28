@@ -5,8 +5,11 @@ import { TasksPage } from "./page/TasksPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import './index.css'
 
+
 function App() {
   return (
+    <>
+    {/* <RainbowBackground /> */}
     <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
@@ -20,6 +23,7 @@ function App() {
         }
       ></Route>
     </Routes>
+    </>
   );
 }
 export default App;

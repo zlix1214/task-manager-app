@@ -224,61 +224,63 @@ export const TasksPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-4">
-      <TaskHeader onLogout={handleLogout} />
-      
-      <TaskFilters
-        searchText={searchText}
-        statusFilter={statusFilter}
-        onSearchChange={setSearchText}
-        onStatusFilterChange={setStatusFilter}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
+      <div className="max-w-2xl mx-auto p-6">
+        <TaskHeader onLogout={handleLogout} />
+        
+        <TaskFilters
+          searchText={searchText}
+          statusFilter={statusFilter}
+          onSearchChange={setSearchText}
+          onStatusFilterChange={setStatusFilter}
+        />
 
-      <TaskForm
-        title={newTitle}
-        description={newDescription}
-        isAdding={isAdding}
-        onTitleChange={setNewTitle}
-        onDescriptionChange={setNewDescription}
-        onSubmit={handleAddTask}
-      />
+        <TaskForm
+          title={newTitle}
+          description={newDescription}
+          isAdding={isAdding}
+          onTitleChange={setNewTitle}
+          onDescriptionChange={setNewDescription}
+          onSubmit={handleAddTask}
+        />
 
-      <TaskSelectionControls
-        isSelectMode={isSelectMode}
-        selectedCount={selectedIds.length}
-        totalCount={filteredTasks.length}
-        onToggleSelectMode={handleToggleSelectMode}
-        onSelectAll={handleSelectAll}
-        onClearSelection={handleClearSelection}
-        onBulkDelete={handleBulkDelete}
-        onBulkStatusChange={handleBulkStatusChange}
-      />
+        <TaskSelectionControls
+          isSelectMode={isSelectMode}
+          selectedCount={selectedIds.length}
+          totalCount={filteredTasks.length}
+          onToggleSelectMode={handleToggleSelectMode}
+          onSelectAll={handleSelectAll}
+          onClearSelection={handleClearSelection}
+          onBulkDelete={handleBulkDelete}
+          onBulkStatusChange={handleBulkStatusChange}
+        />
 
-      <TaskList
-        tasks={filteredTasks}
-        isSelectMode={isSelectMode}
-        selectedIds={selectedIds}
-        changingId={changingId}
-        deletingId={deletingId}
-        isFetching={isFetching}
-        onTaskClick={setSelectedTask}
-        onTaskSelect={handleTaskSelect}
-        onStatusChange={handleChangeStatus}
-        onDelete={handleDelete}
-      />
+        <TaskList
+          tasks={filteredTasks}
+          isSelectMode={isSelectMode}
+          selectedIds={selectedIds}
+          changingId={changingId}
+          deletingId={deletingId}
+          isFetching={isFetching}
+          onTaskClick={setSelectedTask}
+          onTaskSelect={handleTaskSelect}
+          onStatusChange={handleChangeStatus}
+          onDelete={handleDelete}
+        />
 
-      <TaskModal
-        task={selectedTask}
-        isEditing={isEditing}
-        onClose={() => {
-          setSelectedTask(null);
-          setIsEditing(false);
-        }}
-        onEdit={() => setIsEditing(true)}
-        onSave={handleSaveEdit}
-        onCancel={() => setIsEditing(false)}
-        onStatusChange={handleChangeStatus}
-      />
+        <TaskModal
+          task={selectedTask}
+          isEditing={isEditing}
+          onClose={() => {
+            setSelectedTask(null);
+            setIsEditing(false);
+          }}
+          onEdit={() => setIsEditing(true)}
+          onSave={handleSaveEdit}
+          onCancel={() => setIsEditing(false)}
+          onStatusChange={handleChangeStatus}
+        />
+      </div>
     </div>
   );
 };

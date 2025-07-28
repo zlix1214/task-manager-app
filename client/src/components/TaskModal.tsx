@@ -44,17 +44,28 @@ export const TaskModal: React.FC<TaskModalProps> = ({
     setEditedTask(prev => prev ? { ...prev, status } : null);
   };
 
+  const getStatusColor = (status: Task['status']) => {
+    switch (status) {
+      case 'pending': return 'from-amber-50 to-orange-50 border-amber-200/50';
+      case 'in-progress': return 'from-blue-50 to-indigo-50 border-blue-200/50';
+      case 'completed': return 'from-emerald-50 to-green-50 border-emerald-200/50';
+      default: return 'from-gray-50 to-slate-50 border-gray-200/50';
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-[rgba(0,0,0,0.76)] flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+      <div className={`bg-gradient-to-br ${getStatusColor(task.status)} backdrop-blur-sm p-8 w-full max-w-lg relative max-h-[90vh] overflow-y-auto border shadow-2xl transform animate-in fade-in-0 zoom-in-95 duration-200`}>
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-black text-xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-white/50  transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
         >
-          ✕
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </button>
         
-        <div className="pr-8">
+        <div className="pr-12 mb-6">
           {isEditing ? (
             <input
               type="text"
@@ -64,15 +75,16 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                   prev ? { ...prev, title: e.target.value } : prev
                 )
               }
-              className="border p-2 rounded w-full text-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full text-2xl font-bold bg-white/80 backdrop-blur-sm border border-gray-200/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400/50 transition-all duration-200 shadow-sm hover:shadow-md"
               placeholder="任務標題"
             />
           ) : (
-            <h2 className="text-xl font-bold mb-4">{task.title}</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{task.title}</h2>
           )}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-gray-700 mb-3">任務描述</label>
           {isEditing ? (
             <textarea
               rows={4}
@@ -82,40 +94,40 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                   prev ? { ...prev, description: e.target.value } : prev
                 )
               }
-              className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="任務描述"
+              className="w-full bg-white/80 backdrop-blur-sm border border-gray-200/50  px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400/50 transition-all duration-200 shadow-sm hover:shadow-md resize-none"
+              placeholder="描述這個任務的詳細內容..."
             />
           ) : (
-            <p className="text-gray-700 whitespace-pre-wrap">
-              {task.description || '無描述'}
-            </p>
+            <div className="bg-white/60 backdrop-blur-sm  p-4 border border-gray-200/30">
+              <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                {task.description || '沒有描述'}
+              </p>
+            </div>
           )}
         </div>
 
-        <div className="flex justify-between items-center">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              狀態
-            </label>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="w-full sm:w-auto">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">狀態</label>
             <StatusSelect
               value={editedTask.status}
               onChange={handleStatusChange}
-              className="border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-white/80 backdrop-blur-sm border border-gray-200/50 px-4 py-2.5  font-medium shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400/50"
             />
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-3 w-full sm:w-auto">
             {isEditing ? (
               <>
                 <button
                   onClick={onCancel}
-                  className="text-gray-500 hover:text-gray-700 px-3 py-1 rounded transition-colors"
+                  className="flex-1 sm:flex-none px-4 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-all duration-200 hover:bg-white/50"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleSave}
-                  className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition-colors"
+                  className="flex-1 sm:flex-none bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2.5 font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
                 >
                   儲存
                 </button>
@@ -123,17 +135,29 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             ) : (
               <button
                 onClick={onEdit}
-                className="bg-gray-200 text-gray-800 px-3 py-1 rounded hover:bg-gray-300 transition-colors"
+                className="flex-1 sm:flex-none flex items-center justify-center space-x-2 bg-white/80 hover:bg-white text-gray-700 hover:text-gray-900 px-6 py-2.5  font-medium transition-all duration-200 shadow-sm hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 border border-gray-200/50"
               >
-                編輯
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>編輯</span>
               </button>
             )}
           </div>
         </div>
         
         {task.createdAt && (
-          <div className="mt-4 pt-4 border-t text-sm text-gray-500">
-            建立時間: {new Date(task.createdAt).toLocaleString('zh-TW')}
+          <div className="mt-6 pt-6 border-t border-gray-200/50 flex items-center space-x-2 text-sm text-gray-500">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>建立於 {new Date(task.createdAt).toLocaleString('zh-TW', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}</span>
           </div>
         )}
       </div>
