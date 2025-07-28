@@ -35,6 +35,7 @@ export const Login: React.FC = () => {
           Email
           <input
             type="email"
+            autoComplete="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="border w-full"

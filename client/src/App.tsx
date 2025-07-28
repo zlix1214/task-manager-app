@@ -1,20 +1,21 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route ,Navigate } from "react-router-dom";
 import { Login } from "./page/Login";
 import { Register } from "./page/Register";
-import { Tasks } from "./page/Tasks";
+import { TasksPage } from "./page/TasksPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import './index.css'
 
 function App() {
   return (
     <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/Register" element={<Register />} />
       <Route
         path="/Tasks"
         element={
           <PrivateRoute>
-            <Tasks />
+            <TasksPage />
           </PrivateRoute>
         }
       ></Route>

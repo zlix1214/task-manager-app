@@ -37,18 +37,25 @@ export const updateTask = async (req: AuthRequest, res: Response) => {
   try {
     const task = await Task.findOne({ _id: id, userId: req.userId });
 
-    if (!task) return res.status(404).json({ message: "找不到任務" });
+    if (!task) {
+      return res.status(404).json({ message: "找不到任務" });
+    }
 
-    if (title !== undefined) task.title = title;
-    if (description !== undefined) task.description = description;
-    if (status !== undefined) task.status = status;
+    // 安全更新欄位
+    if (typeof title === "string") task.title = title.trim();
+    if (typeof description === "string") task.description = description.trim();
+    if (["pending", "in-progress", "completed"].includes(status)) {
+      task.status = status;
+    }
+
     await task.save();
-
     res.json(task);
   } catch (err) {
-    res.status(501).json({ message: "更新任務失敗" });
+    console.error("更新任務錯誤：", err); // 建議後台 log 錯誤
+    res.status(500).json({ message: "更新任務失敗" });
   }
 };
+
 
 export const deleteTask = async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
