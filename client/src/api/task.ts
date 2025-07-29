@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Task } from "../types/Task";
 
-const API_URL = "http://localhost:5000/api/tasks";
+const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/tasks";
 
 export const fetchTasks = async (token: string): Promise<Task[]> => {
   const res = await axios.get<Task[]>(API_URL, {
