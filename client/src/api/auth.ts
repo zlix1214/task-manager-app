@@ -4,7 +4,11 @@ interface AuthResponse {
     token: string;
 }
 
-const API_URL =import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000/api/auth';
+const API_URL =
+  (import.meta.env.VITE_BACKEND_URL
+    ? `${import.meta.env.VITE_BACKEND_URL}/api/auth`
+    : 'http://localhost:5000/api/auth');
+
 
 export const login = async (email: string, password:string) : Promise<AuthResponse> =>{
     const res = await axios.post<AuthResponse>(`${API_URL}/login`, {email, password});
